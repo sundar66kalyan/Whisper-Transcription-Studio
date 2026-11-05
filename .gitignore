@@ -39,3 +39,25 @@ models/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Local media and transcription outputs
+videos/
+transcripts/
+
+# FFmpeg binaries
+bin/
+
+# Local Streamlit configuration
+.streamlit/config.toml
+.streamlit/secrets.toml
+
+# Temporary files
+*.tmp
+
+doc/
+presets/

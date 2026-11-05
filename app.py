@@ -1,5 +1,7 @@
 ﻿import os
 import json
+import io
+import zipfile
 import tempfile
 import subprocess
 import threading
@@ -19,8 +21,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "100"))
-MAX_MINUTES = int(os.getenv("MAX_MINUTES", "15"))
+MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "2000"))
+MAX_MINUTES = int(os.getenv("MAX_MINUTES", "100000"))
 
 MODEL_LOCK = threading.Lock()
 
@@ -757,6 +759,47 @@ with main_panel:
                             mime="application/json",
                             use_container_width=True
                         )
+
+                    # Create ZIP containing all four formats
+                    zip_buffer = io.BytesIO()
+
+                    with zipfile.ZipFile(
+                        zip_buffer,
+                        "w",
+                        zipfile.ZIP_DEFLATED
+                    ) as zip_file:
+
+                        zip_file.writestr(
+                            base_name + ".txt",
+                            outputs["txt"]
+                        )
+
+                        zip_file.writestr(
+                            base_name + ".srt",
+                            outputs["srt"]
+                        )
+
+                        zip_file.writestr(
+                            base_name + ".vtt",
+                            outputs["vtt"]
+                        )
+
+                        zip_file.writestr(
+                            base_name + ".json",
+                            json.dumps(
+                                outputs["json"],
+                                ensure_ascii=False,
+                                indent=2
+                            )
+                        )
+
+                    st.download_button(
+                        "📦 Download All Formats (ZIP)",
+                        data=zip_buffer.getvalue(),
+                        file_name=base_name + "_transcripts.zip",
+                        mime="application/zip",
+                        use_container_width=True
+                    )
 
                 except Exception as error:
                     status.error("Transcription failed.")

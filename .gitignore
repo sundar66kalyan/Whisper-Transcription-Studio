@@ -1,0 +1,41 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Private configuration
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Uploaded media and generated transcripts
+videos/
+transcripts/
+*.mp3
+*.mp4
+*.mkv
+*.wav
+*.m4a
+*.aac
+*.flac
+*.srt
+*.vtt
+
+# Model files and caches
+*.bin
+*.pt
+*.pth
+*.onnx
+models/
+.cache/
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
